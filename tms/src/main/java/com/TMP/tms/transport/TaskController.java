@@ -4,6 +4,8 @@ import com.TMP.tms.dto.taskdto.*;
 import com.TMP.tms.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,10 +66,20 @@ public class TaskController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Endpoint: DELETE /api/v1/tasks/{id}
+     * Description: DELETE task.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
+        taskService.deleteTask(id);
+        return  ResponseEntity.noContent().build();
+    }
+
     @GetMapping
-    public ResponseEntity<List<TaskResponse>> getAllTasks(
-            @RequestParam(required = false) String status) {
-        return ResponseEntity.ok(taskService.getAllTasks(status));
+    public ResponseEntity<Page<TaskResponse>> getAllTasks(
+            @RequestParam(required = false) String status, Pageable pageable) {
+        return ResponseEntity.ok(taskService.getAllTasks(status, pageable));
     }
 
     @GetMapping("/{id}")

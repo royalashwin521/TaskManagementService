@@ -36,7 +36,6 @@ public class ProjectService {
         return projectMapper.toResponse(savedProject);
     }
 
-    @Transactional(readOnly = true)
     public List<ProjectResponse> getAllProjects() {
         return projectRepository.findAll()
                 .stream()
@@ -44,7 +43,6 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
     public ProjectResponse getProjectById(UUID id) {
         Project project = getProjectEntityById(id);
         return projectMapper.toResponse(project);

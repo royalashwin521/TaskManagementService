@@ -8,6 +8,8 @@ import com.TMP.tms.exception.BusinessException;
 import com.TMP.tms.repository.ProjectRepository;
 import com.TMP.tms.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,28 +93,22 @@ public class TaskService {
         return taskMapper.toResponse(savedTask);
     }
 
-    @Transactional(readOnly = true)
-    public List<TaskResponse> getAllTasks(String status) {
-        List<Task> tasks;
+    public Page<TaskResponse> getAllTasks(String status, Pageable pageable) {
+        Page<Task> tasks;
         if (status != null && !status.trim().isEmpty()) {
-            tasks = taskRepository.findByStatus(TaskStatus.valueOf(status.toUpperCase()));
+            tasks = taskRepository.findByStatus(TaskStatus.valueOf(status.toUpperCase()), pageable);
         } else {
-            tasks = taskRepository.findAll();
+            tasks = taskRepository.findAll(pageable);
         }
 
-        return tasks
-                .stream()
-                .map(taskMapper::toResponse)
-                .collect(Collectors.toList());
+        return tasks.map(taskMapper::toResponse);
     }
 
-    @Transactional(readOnly = true)
     public TaskResponse getTaskById(UUID id) {
         Task task = getTaskEntityById(id);
         return taskMapper.toResponse(task);
     }
 
-    @Transactional(readOnly = true)
     public List<TaskResponse> getTasksByProject(UUID projectId) {
         return taskRepository.findByProjectId(projectId)
                 .stream()
@@ -120,12 +116,18 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
     public List<TaskResponse> getTasksByAssignee(UUID assigneeUserId) {
         return taskRepository.findByAssigneeUserId(assigneeUserId)
                 .stream()
                 .map(taskMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    public void deleteTask(UUID id) {
+        if (!taskRepository.existsById(id)) {
+            throw new BusinessException("Task not found with ID: " + id);
+        }
+        taskRepository.deleteById(id);
     }
 
     // --- Private Helper Methods ---

@@ -43,7 +43,6 @@ public class UserService {
         return mapToResponse(savedUser);
     }
 
-    @Transactional(readOnly = true)
     public TokenResponse login(LoginRequest request) {
         // 1. Find the user
         User user = userRepository.findByEmail(request.email())
@@ -59,14 +58,12 @@ public class UserService {
         return new TokenResponse(token);
     }
 
-    @Transactional(readOnly = true)
     public UserResponse getUserById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return mapToResponse(user);
     }
 
-    @Transactional(readOnly = true)
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll()
                 .stream()

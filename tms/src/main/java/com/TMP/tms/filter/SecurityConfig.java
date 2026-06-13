@@ -40,8 +40,8 @@ public class SecurityConfig {
             
             // Endpoint Authorization Rules
             .authorizeHttpRequests(auth -> auth
-                // Allow Swagger UI for testing
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                    // Allow Swagger UI for testing
+                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 
                 // === PROJECT AUTHORIZATION ===
                 // Users get read-only access. Admins get all access.

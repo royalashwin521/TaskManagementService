@@ -65,7 +65,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
             logger.error("JWT Validation failed: " + e.getMessage());
-            // Token is invalid/expired. We clear context to guarantee 401.
             SecurityContextHolder.clearContext();
         }
 
