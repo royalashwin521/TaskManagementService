@@ -22,6 +22,13 @@ The core business logic engine.
 * Implements a synchronous HTTP client (via Spring `RestClient`) to validate `assigneeUserId` against the Auth Service before assigning tasks.
 * Uses targeted `PATCH` endpoints for partial updates (e.g., status transitions vs. reassignments).
 
+### 3. Frontend UI (Client) - Port `63342`
+A lightweight, open-source-styled dashboard.
+* Built entirely with HTML5, Vanilla JavaScript, and Bootstrap CSS.
+* Interacts securely with both microservices simultaneously.
+* Manages JWT storage natively in browser `localStorage`.
+* Features real-time API error catching and inline validation feedback.
+
 ---
 
 ## 🚀 Prerequisites
@@ -56,8 +63,8 @@ openssl rand -base64 64
 
 
 ## To Run Application
-Start Auth Service
 
+Start Auth Service
 cd uas\uas
 mvn spring-boot:run
 
@@ -72,3 +79,5 @@ Both services generate real-time, interactive API documentation. Once the applic
 Auth Service UI: http://localhost:8081/swagger-ui/index.html
 
 Task Service UI: http://localhost:8082/swagger-ui/index.html
+
+UI: http://localhost:63342/TaskManagementService/tms/static/index.html
