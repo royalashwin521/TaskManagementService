@@ -76,7 +76,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.clearContext(); // Ensure context is wiped on bad token
         }
 
-        // 4. Continue the request
         filterChain.doFilter(request, response);
     }
 }
